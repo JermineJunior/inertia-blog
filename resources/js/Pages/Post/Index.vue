@@ -1,6 +1,8 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 defineProps({
     posts: {
@@ -14,9 +16,13 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Posts
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    Posts
+                </h2>
+
+                <NavLink :href="route('posts.create')"> Create a Post </NavLink>
+            </div>
         </template>
 
         <div class="py-12">
@@ -31,7 +37,7 @@ defineProps({
                             <a href="#" class="font-bold text-xl">
                                 {{ post.title }}
                             </a>
-                            <small> posted by </small>
+                            <small> posted by {{ post.user_id.name }} </small>
                             <p>{{ post.body }}</p>
                         </li>
                     </ul>

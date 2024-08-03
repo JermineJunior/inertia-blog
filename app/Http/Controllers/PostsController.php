@@ -14,7 +14,7 @@ class PostsController extends Controller
     public function index()
     {
         return Inertia("Post/Index", [
-            "posts" => Post::all(),
+            "posts" => Post::latest()->get(),
         ]);
     }
 
@@ -23,15 +23,27 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia("Post/Create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        //validate the form request
+        request()->validate([
+            "title" => ["required", "min:3"],
+            "body" => ["required", "max:500"],
+        ]);
+        //presest the validated record to the database
+        Post::create([
+            "user_id" => auth()->user(),
+            "title" => request("title"),
+            "body" => request("body"),
+        ]);
+        //redirect to the Index page
+        return redirect(route("posts"));
     }
 
     /**
