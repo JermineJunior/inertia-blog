@@ -1,8 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import NavLink from "@/Components/NavLink.vue";
+import { Head, Link } from "@inertiajs/vue3";
 
 defineProps({
     posts: {
@@ -21,7 +19,7 @@ defineProps({
                     Posts
                 </h2>
 
-                <NavLink :href="route('posts.create')"> Create a Post </NavLink>
+                <Link :href="route('posts.create')"> Create a Post </Link>
             </div>
         </template>
 
@@ -29,14 +27,51 @@ defineProps({
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
                     <ul class="container mx-auto my-4">
-                        <li class="px-4 py-2 bg-white shadow-sm sm:rounded-lg my-4 mx-3" v-for="post in posts"
-                            :key="post.id">
-                            <a href="#" class="font-bold text-xl">
-                                {{ post.title }}
-                            </a>
-                            <small> posted by <span class="font-bold text-lg"> {{ post.user }} </span></small>
-                            <p>{{ post.body }}</p>
-                        </li>
+                        <div
+                            v-for="post in posts"
+                            :key="post.id"
+                            id="docs-card-content"
+                            class="bg-white p-4 my-3 rounded-lg shadow flex items-start gap-6 lg:flex-col"
+                        >
+                            <div
+                                class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
+                            >
+                                <svg
+                                    class="size-5 sm:size-6"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <g fill="#FF2D20">
+                                        <path
+                                            d="M8.75 4.5H5.5c-.69 0-1.25.56-1.25 1.25v4.75c0 .69.56 1.25 1.25 1.25h3.25c.69 0 1.25-.56 1.25-1.25V5.75c0-.69-.56-1.25-1.25-1.25Z"
+                                        />
+                                        <path
+                                            d="M24 10a3 3 0 0 0-3-3h-2V2.5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2V20a3.5 3.5 0 0 0 3.5 3.5h17A3.5 3.5 0 0 0 24 20V10ZM3.5 21.5A1.5 1.5 0 0 1 2 20V3a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 .5.5v17c0 .295.037.588.11.874a.5.5 0 0 1-.484.625L3.5 21.5ZM22 20a1.5 1.5 0 1 1-3 0V9.5a.5.5 0 0 1 .5-.5H21a1 1 0 0 1 1 1v10Z"
+                                        />
+                                        <path
+                                            d="M12.751 6.047h2a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-2A.75.75 0 0 1 12 7.3v-.5a.75.75 0 0 1 .751-.753ZM12.751 10.047h2a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-2A.75.75 0 0 1 12 11.3v-.5a.75.75 0 0 1 .751-.753ZM4.751 14.047h10a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-10A.75.75 0 0 1 4 15.3v-.5a.75.75 0 0 1 .751-.753ZM4.75 18.047h7.5a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-7.5A.75.75 0 0 1 4 19.3v-.5a.75.75 0 0 1 .75-.753Z"
+                                        />
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <div class="pt-3 sm:pt-5 lg:pt-0">
+                                <Link
+                                    class="block text-xl font-semibold text-black"
+                                    :href="post.path"
+                                >
+                                    {{ post.title }}
+                                </Link>
+                                <small class="italic"> posted by </small>
+                                <span class="font-bold text-lg">
+                                    {{ post.user }}
+                                </span>
+                                <p class="mt-4 text-sm/relaxed">
+                                    {{ post.body }}
+                                </p>
+                            </div>
+                        </div>
                     </ul>
                 </div>
             </div>

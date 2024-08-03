@@ -14,14 +14,17 @@ class PostsController extends Controller
     public function index()
     {
         return Inertia("Post/Index", [
-            "posts" => Post::latest()->get()->map(function ($post) {
-                return [
-                    'id' => $post->id,
-                    'title'  => $post->title,
-                    'body'  =>  $post->body,
-                    'user'  => $post->user->name
-                ];
-            })
+            "posts" => Post::latest()
+                ->get()
+                ->map(function ($post) {
+                    return [
+                        "id" => $post->id,
+                        "title" => $post->title,
+                        "body" => $post->body,
+                        "user" => $post->user->name,
+                        "path" => $post->path(),
+                    ];
+                }),
         ]);
     }
 
@@ -58,7 +61,14 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return Inertia::render("Post/Show", [
+            "post" => [
+                "id" => $post->id,
+                "title" => $post->title,
+                "body" => $post->body,
+                "user" => $post->user->name,
+            ],
+        ]);
     }
 
     /**

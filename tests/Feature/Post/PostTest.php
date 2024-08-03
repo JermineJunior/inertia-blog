@@ -19,7 +19,7 @@ it("shows a posts title in the index page", function () {
     $response->assertSee($post->title);
 });
 
-it("shows a  posts body in the index page", function () {
+it("shows a posts body in the index page", function () {
     $user = User::factory()->create();
     $post = Post::factory()->create();
     $response = $this->actingAs($user)->get("/posts");
@@ -37,6 +37,15 @@ it("belongs to a user", function () {
     //act
     //assert
     expect($post->user->is($user))->toBeTrue();
+});
+
+it("has a path", function () {
+    $user = User::factory()->create();
+    $post = Post::factory()->create([
+        "user_id" => $user->id,
+    ]);
+
+    expect($post->path())->toBe("/posts/" . $post->id);
 });
 
 // post creation
@@ -81,4 +90,24 @@ it("allows authinticated  users to create new posts", function () {
         "title" => "new title",
         "body" => "new body",
     ]);
+});
+
+test("unauthinticated users cant view a single posts", function () {
+    $user = User::factory()->create();
+    $post = Post::factory()->create([
+        "user_id" => $user->id,
+    ]);
+
+    $response = $this->get($post->path());
+    $response->assertStatus(302);
+});
+
+test("users can view a single post", function () {
+    $user = User::factory()->create();
+    $post = Post::factory()->create([
+        "user_id" => $user->id,
+    ]);
+
+    $response = $this->actingAs($user)->get($post->path());
+    $response->assertOk();
 });
