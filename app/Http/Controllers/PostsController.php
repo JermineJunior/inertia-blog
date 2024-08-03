@@ -14,7 +14,14 @@ class PostsController extends Controller
     public function index()
     {
         return Inertia("Post/Index", [
-            "posts" => Post::latest()->get(),
+            "posts" => Post::latest()->get()->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title'  => $post->title,
+                    'body'  =>  $post->body,
+                    'user'  => $post->user->name
+                ];
+            })
         ]);
     }
 
@@ -36,9 +43,9 @@ class PostsController extends Controller
             "title" => ["required", "min:3"],
             "body" => ["required", "max:500"],
         ]);
-        //presest the validated record to the database
+        //presets the validated record to the database
         Post::create([
-            "user_id" => auth()->user(),
+            "user_id" => auth()->id(),
             "title" => request("title"),
             "body" => request("body"),
         ]);

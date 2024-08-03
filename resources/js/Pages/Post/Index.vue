@@ -6,7 +6,7 @@ import NavLink from "@/Components/NavLink.vue";
 
 defineProps({
     posts: {
-        type: Array,
+        type: Object,
     },
 });
 </script>
@@ -29,15 +29,12 @@ defineProps({
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
                     <ul class="container mx-auto my-4">
-                        <li
-                            class="px-4 py-2 bg-white shadow-sm sm:rounded-lg my-4 mx-3"
-                            v-for="post in posts"
-                            :key="post.id"
-                        >
+                        <li class="px-4 py-2 bg-white shadow-sm sm:rounded-lg my-4 mx-3" v-for="post in posts"
+                            :key="post.id">
                             <a href="#" class="font-bold text-xl">
                                 {{ post.title }}
                             </a>
-                            <small> posted by {{ post.user_id.name }} </small>
+                            <small> posted by <span class="font-bold text-lg"> {{ post.user }} </span></small>
                             <p>{{ post.body }}</p>
                         </li>
                     </ul>
