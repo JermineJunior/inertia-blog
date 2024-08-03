@@ -27,3 +27,14 @@ it("shows a  posts body in the index page", function () {
     $response->assertOk();
     $response->assertSee($post->body);
 });
+
+it("belongs to a user", function () {
+    //arrange
+    $user = User::factory()->create();
+    $post = Post::factory()->create([
+        "user_id" => $user->id,
+    ]);
+    //act
+    //assert
+    expect($post->user->is($user))->toBeTrue();
+});
