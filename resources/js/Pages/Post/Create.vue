@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
@@ -30,14 +29,14 @@ const submit = () => {
                     Create a Post
                 </h2>
 
-                <NavLink :href="route('posts')"> Go Back </NavLink>
+                <Link class="cu-btn" :href="route('posts')"> Go Back </Link>
             </div>
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-2xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white rounded-lg shadow p-6">
-                    <h2 class="text-xl font-bold py-2">
+            <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+                <div class="p-6 overflow-hidden bg-white rounded-lg shadow">
+                    <h2 class="py-2 text-xl font-bold">
                         Add a new Post to the feed
                     </h2>
                     <div class="mt-4">
@@ -49,7 +48,7 @@ const submit = () => {
                                 <TextInput
                                     id="title"
                                     type="text"
-                                    class="mt-1 block w-full"
+                                    class="block w-full mt-1"
                                     v-model="form.title"
                                     required
                                     placeholder="this is a new title"
@@ -67,7 +66,7 @@ const submit = () => {
                                 <textarea
                                     v-model="form.body"
                                     placeholder="here is the content of my post"
-                                    class="w-full mt-1 block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                    class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                     autofocus
                                     required
                                 ></textarea>

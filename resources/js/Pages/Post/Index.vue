@@ -19,7 +19,9 @@ defineProps({
                     Posts
                 </h2>
 
-                <Link :href="route('posts.create')"> Create a Post </Link>
+                <Link class="cu-btn" :href="route('posts.create')">
+                    Create a Post
+                </Link>
             </div>
         </template>
 
@@ -31,18 +33,18 @@ defineProps({
                             v-for="post in posts"
                             :key="post.id"
                             id="docs-card-content"
-                            class="bg-white p-4 my-3 rounded-lg shadow flex items-start gap-6 lg:flex-col"
+                            class="flex items-start gap-6 p-4 my-3 bg-white rounded-lg shadow lg:flex-col"
                         >
                             <div
-                                class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
+                                class="flex size-12 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 sm:size-16"
                             >
                                 <svg
-                                    class="size-5 sm:size-6"
+                                    class="size-5 sm:size-6 fill-indigo-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                 >
-                                    <g fill="#FF2D20">
+                                    <g>
                                         <path
                                             d="M8.75 4.5H5.5c-.69 0-1.25.56-1.25 1.25v4.75c0 .69.56 1.25 1.25 1.25h3.25c.69 0 1.25-.56 1.25-1.25V5.75c0-.69-.56-1.25-1.25-1.25Z"
                                         />
@@ -64,7 +66,7 @@ defineProps({
                                     {{ post.title }}
                                 </Link>
                                 <small class="italic"> posted by </small>
-                                <span class="font-bold text-lg">
+                                <span class="text-lg font-bold">
                                     {{ post.user }}
                                 </span>
                                 <p class="mt-4 text-sm/relaxed">

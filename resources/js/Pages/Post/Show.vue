@@ -24,32 +24,27 @@ defineProps({
                     Post Details
                 </h2>
 
-                <Link
-                    class="text-gray-700 text-sm hover:underline hover:text-gray-600"
-                    :href="route('posts')"
-                >
-                    Go Back
-                </Link>
+                <Link class="cu-btn" :href="route('posts')"> Go Back </Link>
             </div>
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-2xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white rounded-lg shadow p-6">
+            <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+                <div class="p-6 overflow-hidden bg-white rounded-lg shadow">
                     <div
                         id="docs-card-content"
                         class="flex items-start gap-6 lg:flex-col"
                     >
                         <div
-                            class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16"
+                            class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#6366f1]/10 sm:size-16"
                         >
                             <svg
-                                class="size-5 sm:size-6"
+                                class="size-5 sm:size-6 fill-indigo-500"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                             >
-                                <g fill="#FF2D20">
+                                <g>
                                     <path
                                         d="M8.75 4.5H5.5c-.69 0-1.25.56-1.25 1.25v4.75c0 .69.56 1.25 1.25 1.25h3.25c.69 0 1.25-.56 1.25-1.25V5.75c0-.69-.56-1.25-1.25-1.25Z"
                                     />
@@ -68,7 +63,7 @@ defineProps({
                                 {{ post.title }}
                             </h2>
                             <small class="italic"> posted by </small>
-                            <span class="font-bold text-lg">
+                            <span class="text-lg font-bold">
                                 {{ post.user }}
                             </span>
                             <p class="mt-4 text-sm/relaxed">
