@@ -44,8 +44,12 @@ Route::middleware("auth")->group(function () {
         "posts.create"
     );
     Route::post("/posts", [PostsController::class, "store"])->name(
-        "posts-create"
+        "posts.store"
     );
+    Route::get("/posts/{post}/edit", [PostsController::class, "edit"]);
     Route::get("/posts/{post}", [PostsController::class, "show"]);
+    Route::put("/posts/{post}", [PostsController::class, "update"])->name(
+        "posts.update"
+    );
 });
 require __DIR__ . "/auth.php";

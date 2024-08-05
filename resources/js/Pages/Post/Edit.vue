@@ -5,15 +5,21 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import NavLink from "@/Components/NavLink.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+
+const props = defineProps({
+    post: {
+        type: Object,
+    },
+});
 
 const form = useForm({
-    title: "",
-    body: "",
+    title: props.post.title,
+    body: props.post.body,
 });
 
 const submit = () => {
-    form.post(route("posts.store"), {
+    form.put(`/posts/${props.post.id}`, {
         onFinish: () => form.reset(),
     });
 };
@@ -26,10 +32,10 @@ const submit = () => {
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Create a Post
+                    Edit Your Post
                 </h2>
 
-                <Link class="cu-btn" :href="route('posts')"> Go Back </Link>
+                <Link class="cu-btn" :href="post.path"> Go Back </Link>
             </div>
         </template>
 
@@ -84,6 +90,7 @@ const submit = () => {
                                 >
                                     Save Post
                                 </PrimaryButton>
+                                <DangerButton class="ml-1">Delete</DangerButton>
                             </div>
                         </form>
                     </div>

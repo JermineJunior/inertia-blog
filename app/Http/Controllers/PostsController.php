@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
 
 class PostsController extends Controller
 {
@@ -67,6 +69,8 @@ class PostsController extends Controller
                 "title" => $post->title,
                 "body" => $post->body,
                 "user" => $post->user->name,
+                "path" => $post->path() . "/edit",
+                "canEdit" => Gate::allows("update-post", $post),
             ],
         ]);
     }
@@ -76,7 +80,15 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return Inertia::render("Post/Edit", [
+            "post" => [
+                "id" => $post->id,
+                "title" => $post->title,
+                "body" => $post->body,
+                "user" => $post->user->name,
+                "path" => $post->path(),
+            ],
+        ]);
     }
 
     /**
@@ -84,7 +96,19 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        //validate the form request
+        request()->validate([
+            "title" => ["required", "min:3"],
+            "body" => ["required", "max:500"],
+        ]);
+        //presets the validated record to the database
+        $post->update([
+            "user_id" => auth()->id(),
+            "title" => request("title"),
+            "body" => request("body"),
+        ]);
+        //redirect to the Index page
+        return redirect(route("posts"));
     }
 
     /**

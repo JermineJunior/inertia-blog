@@ -90,6 +90,7 @@ it("allows authinticated  users to create new posts", function () {
         "title" => "new title",
         "body" => "new body",
     ]);
+    $this->assertDatabaseCount("posts", 1);
 });
 
 test("unauthinticated users cant view a single posts", function () {
@@ -110,4 +111,36 @@ test("users can view a single post", function () {
 
     $response = $this->actingAs($user)->get($post->path());
     $response->assertOk();
+    $response->assertStatus(200);
+});
+
+test("post owners can visit the edit page", function () {
+    $user = User::factory()->create();
+    $post = Post::factory()->create([
+        "user_id" => $user->id,
+    ]);
+
+    $response = $this->actingAs($user)->get($post->path() . "/edit");
+    $response->assertOk();
+});
+
+test("post owners can update post details", function () {
+    $user = User::factory()->create();
+    $post = Post::factory()->create([
+        "user_id" => $user->id,
+        "title" => "old title",
+        "body" => "old body",
+    ]);
+
+    $response = $this->actingAs($user)->put("/posts/" . $post->id, [
+        "user_id" => $user->id,
+        "title" => "new title",
+        "body" => "new body",
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect("/posts");
+
+    $post->refresh();
+    expect($post->title)->toBe("new title");
+    expect($post->body)->toBe("new body");
 });
