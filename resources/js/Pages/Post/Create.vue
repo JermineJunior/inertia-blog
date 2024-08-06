@@ -13,7 +13,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route("posts.store"), {
+    form.post(route("post.store"), {
         onFinish: () => form.reset(),
     });
 };
@@ -45,43 +45,23 @@ const submit = () => {
                             <div>
                                 <InputLabel for="title" value="Post Title" />
 
-                                <TextInput
-                                    id="title"
-                                    type="text"
-                                    class="block w-full mt-1"
-                                    v-model="form.title"
-                                    required
-                                    placeholder="this is a new title"
-                                    autofocus
-                                />
+                                <TextInput id="title" type="text" class="block w-full mt-1" v-model="form.title" required
+                                    placeholder="this is a new title" autofocus />
 
-                                <InputError
-                                    class="mt-2"
-                                    :message="form.errors.title"
-                                />
+                                <InputError class="mt-2" :message="form.errors.title" />
                             </div>
                             <!-- post body -->
                             <div class="mt-4">
                                 <InputLabel for="body" value="Post Content" />
-                                <textarea
-                                    v-model="form.body"
-                                    placeholder="here is the content of my post"
+                                <textarea v-model="form.body" placeholder="here is the content of my post"
                                     class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                    autofocus
-                                    required
-                                ></textarea>
-                                <InputError
-                                    class="mt-2"
-                                    :message="form.errors.body"
-                                />
+                                    autofocus required></textarea>
+                                <InputError class="mt-2" :message="form.errors.body" />
                             </div>
                             <!-- submit form -->
                             <div class="flex items-center justify-end mt-4">
-                                <PrimaryButton
-                                    class="ms-4"
-                                    :class="{ 'opacity-25': form.processing }"
-                                    :disabled="form.processing"
-                                >
+                                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
+                                    :disabled="form.processing">
                                     Save Post
                                 </PrimaryButton>
                             </div>

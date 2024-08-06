@@ -6,6 +6,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
+import Modal from "@/Components/Modal.vue";
+import { nextTick, ref } from "vue";
 
 const props = defineProps({
     post: {
@@ -17,11 +19,15 @@ const form = useForm({
     title: props.post.title,
     body: props.post.body,
 });
-
+//update the post
 const submit = () => {
     form.put(`/posts/${props.post.id}`, {
         onFinish: () => form.reset(),
     });
+};
+//delete the post
+const deletePost = () => {
+    form.delete(`/posts/${props.post.id}`);
 };
 </script>
 
@@ -43,7 +49,7 @@ const submit = () => {
             <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
                 <div class="p-6 overflow-hidden bg-white rounded-lg shadow">
                     <h2 class="py-2 text-xl font-bold">
-                        Add a new Post to the feed
+                        Update the post details
                     </h2>
                     <div class="mt-4">
                         <form @submit.prevent="submit">
@@ -84,13 +90,15 @@ const submit = () => {
                             <!-- submit form -->
                             <div class="flex items-center justify-end mt-4">
                                 <PrimaryButton
-                                    class="ms-4"
+                                    class="mr-2"
                                     :class="{ 'opacity-25': form.processing }"
                                     :disabled="form.processing"
                                 >
                                     Save Post
                                 </PrimaryButton>
-                                <DangerButton class="ml-1">Delete</DangerButton>
+                                <DangerButton @click="deletePost"
+                                    >Delete</DangerButton
+                                >
                             </div>
                         </form>
                     </div>

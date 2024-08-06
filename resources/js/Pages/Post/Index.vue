@@ -19,7 +19,7 @@ defineProps({
                     Posts
                 </h2>
 
-                <Link class="cu-btn" :href="route('posts.create')">
+                <Link class="cu-btn" :href="route('post.create')">
                     Create a Post
                 </Link>
             </div>
@@ -36,7 +36,7 @@ defineProps({
                             class="flex items-start gap-6 p-4 my-3 bg-white rounded-lg shadow lg:flex-col"
                         >
                             <div
-                                class="flex size-12 shrink-0 items-center justify-center rounded-full bg-indigo-500/10 sm:size-16"
+                                class="flex items-center justify-center rounded-full size-12 shrink-0 bg-indigo-500/10 sm:size-16"
                             >
                                 <svg
                                     class="size-5 sm:size-6 fill-indigo-500"

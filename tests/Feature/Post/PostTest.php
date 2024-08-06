@@ -1,6 +1,7 @@
 <?php
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 
 test("Index page is displayed", function () {
     $user = User::factory()->create();
