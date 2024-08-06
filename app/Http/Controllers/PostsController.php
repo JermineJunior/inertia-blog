@@ -25,6 +25,7 @@ class PostsController extends Controller
                         "body" => $post->body,
                         "user" => $post->user->name,
                         "path" => $post->path(),
+                        "created_at" => $post->created_at->toFormattedDateString(),
                     ];
                 }),
         ]);
