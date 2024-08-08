@@ -19,7 +19,7 @@ defineProps({
                     Posts
                 </h2>
 
-                <Link class="cu-btn" :href="route('post.create')">
+                <Link class="cu-btn" :href="route('posts.create')">
                 Create a Post
                 </Link>
             </div>
@@ -29,7 +29,7 @@ defineProps({
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
                     <ul class="container mx-auto my-4">
-                        <div v-for="post in posts" :key="post.id" id="docs-card-content"
+                        <div v-for="post in posts.data" :key="post.id" id="docs-card-content"
                             class="flex items-start gap-6 p-4 my-3 bg-white rounded-lg shadow lg:flex-col">
                             <div
                                 class="flex items-center justify-center rounded-full size-12 shrink-0 bg-indigo-500/10 sm:size-16">

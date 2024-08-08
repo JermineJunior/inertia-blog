@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,19 +16,9 @@ class PostsController extends Controller
      */
     public function index()
     {
+        $posts = PostResource::collection(Post::latest()->get());
         return Inertia("Post/Index", [
-            "posts" => Post::latest()
-                ->get()
-                ->map(function ($post) {
-                    return [
-                        "id" => $post->id,
-                        "title" => $post->title,
-                        "body" => $post->body,
-                        "user" => $post->user->name,
-                        "path" => $post->path(),
-                        "created_at" => $post->created_at->toFormattedDateString(),
-                    ];
-                }),
+            "posts" => $posts,
         ]);
     }
 
@@ -64,15 +55,11 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
+        $newPost = new PostResource($post);
+        $canEdit = Gate::allows('update-post', $post);
         return Inertia::render("Post/Show", [
-            "post" => [
-                "id" => $post->id,
-                "title" => $post->title,
-                "body" => $post->body,
-                "user" => $post->user->name,
-                "path" => $post->path() . "/edit",
-                "canEdit" => Gate::allows("update-post", $post),
-            ],
+            "post" => $newPost,
+            "canEdit" => $canEdit,
         ]);
     }
 
@@ -81,14 +68,9 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
+        $newPost = new PostResource($post);
         return Inertia::render("Post/Edit", [
-            "post" => [
-                "id" => $post->id,
-                "title" => $post->title,
-                "body" => $post->body,
-                "user" => $post->user->name,
-                "path" => $post->path(),
-            ],
+            "post" => $newPost,
         ]);
     }
 
@@ -119,6 +101,6 @@ class PostsController extends Controller
     {
         $post->delete();
 
-        return redirect(route("posts"));
+        return redirect()->route("posts");
     }
 }

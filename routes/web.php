@@ -14,6 +14,7 @@ Route::get("/", function () {
         "phpVersion" => PHP_VERSION,
     ]);
 });
+//
 //dashboard
 Route::get("/dashboard", function () {
     return Inertia::render("Dashboard");
@@ -31,26 +32,11 @@ Route::middleware("auth")->group(function () {
     Route::delete("/profile", [ProfileController::class, "destroy"])->name(
         "profile.destroy"
     );
+
+    //Posts
+    Route::resource("/posts", PostsController::class)->except("index");
 });
-//
-Route::get("/contact", function () {
-    return Inertia::render("Contact");
-});
-//Posts
 
 Route::get("/posts", [PostsController::class, "index"])->name("posts");
-Route::middleware("auth")->group(function () {
-    Route::get("/posts/create", [PostsController::class, "create"])->name(
-        "post.create"
-    );
-    Route::post("/posts", [PostsController::class, "store"])->name(
-        "post.store"
-    );
-    Route::get("/posts/{post}/edit", [PostsController::class, "edit"]);
-    Route::get("/posts/{post}", [PostsController::class, "show"]);
-    Route::put("/posts/{post}", [PostsController::class, "update"])->name(
-        "post.update"
-    );
-    Route::delete("/posts", [PostsController::class, "destroy"]);
-});
+
 require __DIR__ . "/auth.php";

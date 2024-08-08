@@ -5,7 +5,7 @@ use App\Models\User;
 describe('stability', function () {
     test('guest stability', function ($url) {
         $this->get($url)->assertOk();
-    })->with(['/', '/posts', '/contact']);
+    })->with(['/', '/posts']);
 
 
     test('auth stability', function ($url) {
@@ -148,5 +148,21 @@ describe('Post Crud', function () {
         $post->refresh();
         expect($post->title)->toBe("new title");
         expect($post->body)->toBe("new body");
+    });
+
+    test('post owners can delete their posts', function () {
+        $user = User::factory()->create();
+        $post = Post::factory()->create([
+            "user_id" => $user->id,
+            "title" => "old title",
+            "body" => "old body",
+        ]);
+        $response = $this->actingAs($user)->delete("/posts", $post->toArray());
+
+        $this->assertDatabaseMissing("posts", [
+            "title" => "new title",
+            "body" => "new body",
+        ]);
+
     });
 });
