@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import Pagination from "@/Components/Pagination.vue";
 import { Head, Link } from "@inertiajs/vue3";
 
 defineProps({
@@ -64,6 +65,7 @@ defineProps({
                                 </p>
                             </div>
                         </div>
+                        <Pagination :data="posts" />
                     </ul>
                 </div>
             </div>
