@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Gate;
+
 
 class PostsController extends Controller
 {
@@ -33,13 +34,10 @@ class PostsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(StorePostRequest $request): RedirectResponse
     {
         //validate the form request
-        request()->validate([
-            "title" => ["required", "min:3"],
-            "body" => ["required", "max:500"],
-        ]);
+        $request->validated();
         //presets the validated record to the database
         Post::create([
             "user_id" => auth()->id(),
@@ -56,7 +54,7 @@ class PostsController extends Controller
     public function show(Post $post)
     {
         $newPost = new PostResource($post);
-        $canEdit = Gate::allows('update-post', $post);
+        $canEdit = Gate::allows("update-post", $post);
         return Inertia::render("Post/Show", [
             "post" => $newPost,
             "canEdit" => $canEdit,
@@ -77,13 +75,15 @@ class PostsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Post $post)
     {
         //validate the form request
-        request()->validate([
-            "title" => ["required", "min:3"],
-            "body" => ["required", "max:500"],
-        ]);
+        request()->validate(
+            [
+                "title" => "required|max:255",
+                "body" => "required",
+            ]
+        );
         //presets the validated record to the database
         $post->update([
             "user_id" => auth()->id(),

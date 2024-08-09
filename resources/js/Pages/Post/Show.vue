@@ -59,10 +59,10 @@ defineProps({
                             <p class="mt-4 text-sm/relaxed">
                                 {{ post.data.body }}
                             </p>
-                            <div v-if="canEdit" class="flex justify-end mt-4 place-items-center">
-                                <Link :href="post.data.path + '/edit'" class="cu-btn">Edit Post</Link>
-                            </div>
                         </div>
+                    </div>
+                    <div v-if="canEdit" class="flex justify-end mt-4 place-items-center">
+                        <Link :href="post.data.path + '/edit'" class="cu-btn">Edit Post</Link>
                     </div>
                 </div>
             </div>
