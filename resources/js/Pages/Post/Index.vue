@@ -1,13 +1,60 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import MagnifyingGlass from "@/Components/icons/MagnifyingGlass.vue";
 import Pagination from "@/Components/Pagination.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, router, usePage } from "@inertiajs/vue3";
+import { ref, computed, watch } from "vue";
 
 defineProps({
     posts: {
         type: Object,
     },
+    search: {
+        type: String,
+    }
 });
+//capture the user`s search value
+const search = ref(usePage().props.search),
+    pageNumber = ref(1);
+let postsUrl = computed(() => {
+    //build the current url
+    let url = new URL(route('posts'));
+    /**
+     * reseating the page number to view the
+     *  returned search data
+     */
+    url.searchParams.append("page", pageNumber.value);
+    //append the user search as a param to the url
+    if (search.value) {
+        url.searchParams.append("search", search.value);
+    }
+    return url;
+});
+//keep track of the changes in the url
+watch(
+    () => postsUrl.value,
+    //capture and visit the new url on change
+    (updatedUrl) => {
+        router.visit(updatedUrl, {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true
+        })
+    });
+//when the user searches we return the results from the first page
+watch(() => search,
+    (value) => {
+        if (value) {
+            pageNumber.value = 1
+        }
+    }
+)
+const updatedPageNumber = (link) => {
+    pageNumber.value = link.url.split("=")[1]
+}
+const clearFilters = () => {
+    search.value = ''
+}
 </script>
 
 <template>
@@ -29,6 +76,24 @@ defineProps({
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden">
+                    <h1 class="text-2xl font-bold">All Posts:</h1>
+                    <div class="container mx-auto my-3">
+                        <div class="flex flex-col justify-start sm:flex-row">
+                            <div class="relative col-span-3 text-sm text-gray-800">
+                                <div
+                                    class="absolute top-0 bottom-0 left-0 flex items-center pl-2 text-gray-500 pointer-events-none">
+                                    <MagnifyingGlass />
+                                </div>
+
+                                <input type="text" v-model="search" placeholder="Search for posts..." id="search"
+                                    class="block py-2 pl-10 text-gray-900 border-0 rounded-lg w-[25rem] ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            </div>
+
+                            <button @click="clearFilters" class="mx-3 text-sm text-gray-700">
+                                clear all
+                            </button>
+                        </div>
+                    </div>
                     <ul class="container mx-auto my-4">
                         <div v-for="post in posts.data" :key="post.id" id="docs-card-content"
                             class="flex items-start gap-6 p-4 my-3 bg-white rounded-lg shadow lg:flex-col">
@@ -65,7 +130,7 @@ defineProps({
                                 </p>
                             </div>
                         </div>
-                        <Pagination :data="posts" />
+                        <Pagination :data="posts" :updatedPageNumber="updatedPageNumber" />
                     </ul>
                 </div>
             </div>

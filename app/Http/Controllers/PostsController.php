@@ -17,9 +17,15 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = PostResource::collection(Post::latest()->paginate(5));
+
+        $postQuery = Post::query();
+        $this->applySearch($postQuery, request()->search);
+        $posts = PostResource::collection(
+            $postQuery->paginate(8)
+        );
         return Inertia("Post/Index", [
             "posts" => $posts,
+            'search' => request()->search ?? ''
         ]);
     }
 
@@ -102,5 +108,13 @@ class PostsController extends Controller
         $post->delete();
 
         return redirect()->route("posts");
+    }
+
+    protected function applySearch($query, $search)
+    {
+        //return results filtered by name
+        $query->when($search, function ($query, $search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        });
     }
 }
