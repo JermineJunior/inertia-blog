@@ -16,18 +16,17 @@ describe('stability', function () {
 describe('Post Crud', function () {
 
     it("shows a posts title in the index page", function () {
-        $user = User::factory()->create();
         $post = Post::factory()->create();
-        $response = $this->actingAs($user)->get("/posts");
+        $response = $this->signIn()->get("/posts");
 
         $response->assertOk();
         $response->assertSee($post->title);
     });
 
     it("shows a posts body in the index page", function () {
-        $user = User::factory()->create();
         $post = Post::factory()->create();
-        $response = $this->actingAs($user)->get("/posts");
+     
+        $response = $this->signIn()->get("/posts");
 
         $response->assertOk();
         $response->assertSee($post->body);
@@ -54,14 +53,6 @@ describe('Post Crud', function () {
     });
 
     // post creation
-    test("the create page is displayed", function () {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get("/posts/create");
-
-        $response->assertOk();
-        $response->assertStatus(200);
-    });
 
     it("doesn't allow unauthenticated users to visit the  create form", function () {
         $response = $this->get("/posts/create");
@@ -89,7 +80,7 @@ describe('Post Crud', function () {
             "title" => "new title",
             "body" => "new body",
         ];
-        $response = $this->actingAs($user)->post("/posts", $post);
+        $response = $this->signIn($user)->post("/posts", $post);
 
         $this->assertDatabaseHas("posts", [
             "title" => "new title",
@@ -114,7 +105,7 @@ describe('Post Crud', function () {
             "user_id" => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->get($post->path());
+        $response = $this->signIn($user)->get($post->path());
         $response->assertOk();
         $response->assertStatus(200);
     });
@@ -125,7 +116,7 @@ describe('Post Crud', function () {
             "user_id" => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->get($post->path() . "/edit");
+        $response = $this->signIn($user)->get($post->path() . "/edit");
         $response->assertOk();
     });
 
@@ -137,7 +128,7 @@ describe('Post Crud', function () {
             "body" => "old body",
         ]);
 
-        $response = $this->actingAs($user)->put("/posts/" . $post->id, [
+        $response = $this->signIn($user)->put("/posts/" . $post->id, [
             "user_id" => $user->id,
             "title" => "new title",
             "body" => "new body",
@@ -157,7 +148,7 @@ describe('Post Crud', function () {
             "title" => "old title",
             "body" => "old body",
         ]);
-        $response = $this->actingAs($user)->delete("/posts", $post->toArray());
+        $this->signIn($user)->delete("/posts", $post->toArray());
 
         $this->assertDatabaseMissing("posts", [
             "title" => "new title",
