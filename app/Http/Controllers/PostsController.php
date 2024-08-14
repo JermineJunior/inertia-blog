@@ -29,6 +29,11 @@ class PostsController extends Controller
         ]);
     }
 
+    public function userPosts()
+    {
+        $posts = PostResource::collection(auth()->user()->posts);
+        return inertia('Dashboard', ["posts" => $posts]);
+    }
     /**
      * Show the form for creating a new resource.
      */

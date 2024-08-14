@@ -35,6 +35,7 @@ Route::middleware("auth")->group(function () {
 
     //Posts
     Route::resource("/posts", PostsController::class)->except("index");
+    Route::get('/home', [PostsController::class, 'userPosts'])->name('user-posts');
 });
 
 Route::get("/posts", [PostsController::class, "index"])->name("posts");
